@@ -3,30 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safety Video</title>
-    <link rel="stylesheet" href="video.css">
+    <title>Reckitt Video</title>
+
+    <link rel="stylesheet" href="css/video.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-    <div class="container">
+    <div class="video-card">
 
         <img src="assets/logo.png" alt="Reckitt Logo" class="logo">
 
-        <div class="video-container">
-            <img src="assets/video-thumbnail.jpg" alt="Safety Video">
-
-            <button class="play-btn">
-                ▶
-            </button>
+        <div class="video-wrapper">
+            <video id="trainingVideo" class="training-video" controls>
+                <source src="assets/video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
-        <button class="continue-btn">
+        <button id="continueBtn" class="continue-btn" disabled>
             Continue
         </button>
 
         <img src="assets/watermark.png" alt="" class="watermark">
 
     </div>
+
+    <script>
+        const video = document.getElementById("trainingVideo");
+        const continueBtn = document.getElementById("continueBtn");
+
+        video.addEventListener("ended", () => {
+            continueBtn.disabled = false;
+            continueBtn.classList.add("enabled");
+        });
+
+        continueBtn.addEventListener("click", () => {
+            window.location.href = "assessment.html";
+        });
+    </script>
 
 </body>
 </html>
