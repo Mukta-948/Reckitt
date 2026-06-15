@@ -1,0 +1,133 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Montserrat', sans-serif;
+}
+
+body{
+    background:#d3d3d3;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.video-card{
+    width:100%;
+    max-width:750px;
+    background:#FFF2F8;
+    position:relative;
+    padding:40px 35px 60px;
+    overflow:hidden;
+}
+
+.logo{
+    display:block;
+    width:253px;
+    max-width:55%;
+    margin:0 auto 25px;
+}
+
+.video-wrapper{
+    width:100%;
+    max-width:680px;
+    margin:0 auto;
+}
+
+.training-video{
+    width:100%;
+    display:block;
+    border-radius:18px;
+}
+
+.continue-btn{
+    display:block;
+    width:100%;
+    max-width:460px;
+    height:66px;
+    margin:35px auto 0;
+    border:none;
+    border-radius:10px;
+    background:#cccccc;
+    color:#ffffff;
+    font-size:32px;
+    font-weight:600;
+    cursor:not-allowed;
+    transition:0.3s;
+}
+
+.continue-btn.enabled{
+    background:linear-gradient(
+        90deg,
+        #e4007f,
+        #ff008c
+    );
+    cursor:pointer;
+}
+
+.watermark{
+    position:absolute;
+    bottom:-20px;
+    left:-14px;
+    width:136px;
+    opacity:0.06;
+    pointer-events:none;
+}
+
+@media(max-width:768px){
+
+    .video-card{
+        padding:30px 20px 50px;
+    }
+
+    .logo{
+        width:180px;
+    }
+
+    .continue-btn{
+        height:55px;
+        font-size:24px;
+    }
+}
+@media (max-width: 768px){
+
+    body{
+        padding:0;
+        background:#FFF2F8;
+    }
+
+    .assessment-card,
+    .result-card,
+    .pass-card,
+    .video-card,
+    .card{
+        width:100%;
+        min-height:100vh;
+        height:auto;
+        border-radius:0;
+    }
+
+    .logo{
+        width:180px;
+    }
+
+}
+@media (max-width:768px){
+
+    .video-card{
+        width:100%;
+        min-height:100vh;
+        padding:20px;
+    }
+
+    .training-video{
+        width:100%;
+        height:auto;
+    }
+
+    .continue-btn{
+        width:100%;
+    }
+}
