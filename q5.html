@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment - Question 5</title>
+
+<link rel="stylesheet" href="css/assessment.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="assessment-card">
+
+<img src="assets/logo.png" class="logo" alt="Reckitt Logo">
+
+<h1 class="title">Assessment</h1>
+
+<div class="progress-section">
+    <div class="progress-bar">
+        <div class="progress-fill" style="width:100%;"></div>
+    </div>
+    <span class="progress-text">5/5</span>
+</div>
+
+<div class="question-box">
+    What should you do if you notice an unsafe condition?
+</div>
+
+<div class="options-grid">
+
+<button class="option" data-correct="false">
+    <span class="option-text">Ignore it</span>
+</button>
+
+<button class="option" data-correct="true">
+    <span class="option-text">Report it immediately</span>
+</button>
+
+<button class="option" data-correct="false">
+    <span class="option-text">Wait for someone else</span>
+</button>
+
+<button class="option" data-correct="false">
+    <span class="option-text">Leave without informing anyone</span>
+</button>
+
+</div>
+
+<div class="button-row">
+
+<button class="prev-btn" onclick="location.href='q4.html'">
+    Previous
+</button>
+
+<button class="next-btn" id="finishBtn" disabled>
+    Finish
+</button>
+
+</div>
+
+<img src="assets/watermark.png" class="watermark" alt="">
+
+</div>
+
+<script>
+
+const options = document.querySelectorAll(".option");
+const finishBtn = document.getElementById("finishBtn");
+
+let answered = false;
+
+options.forEach(option => {
+
+    option.addEventListener("click", () => {
+
+        if (answered) return;
+
+        answered = true;
+
+        const isCorrect =
+            option.dataset.correct === "true";
+
+        if (isCorrect) {
+
+            option.style.background = "#F1FFF6";
+            option.style.border = "2px solid #009951";
+
+            option.querySelector(".option-text").style.color = "#009951";
+            option.querySelector(".option-text").style.fontWeight = "600";
+
+        } else {
+
+            option.style.background = "#FFF1F1";
+            option.style.border = "2px solid #E53935";
+
+            option.querySelector(".option-text").style.color = "#E53935";
+            option.querySelector(".option-text").style.fontWeight = "600";
+
+        }
+
+        localStorage.setItem(
+            "q5Answer",
+            isCorrect ? "correct" : "wrong"
+        );
+
+        finishBtn.disabled = false;
+
+    });
+
+});
+
+finishBtn.addEventListener("click", () => {
+
+    window.location.href = "result.html";
+
+});
+
+</script>
+
+</body>
+</html>
