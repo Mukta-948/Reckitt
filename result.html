@@ -42,16 +42,12 @@
 </div>
 
 <script>
-
-let score = 0;
-
-for(let i = 1; i <= 5; i++){
-
-    if(localStorage.getItem(`q${i}Answer`) === "correct"){
-        score++;
-    }
-
-}
+let score =
+    Number(localStorage.getItem("q1Score") || 0) +
+    Number(localStorage.getItem("q2Score") || 0) +
+    Number(localStorage.getItem("q3Score") || 0) +
+    Number(localStorage.getItem("q4Score") || 0) +
+    Number(localStorage.getItem("q5Score") || 0);
 
 const percentage = (score / 5) * 100;
 
@@ -59,10 +55,71 @@ const resultTitle = document.getElementById("resultTitle");
 const scoreValue = document.getElementById("scoreValue");
 const resultMessage = document.getElementById("resultMessage");
 const resultBtn = document.getElementById("resultBtn");
+const API_URL = "https://serve.faux-api.com/22be078d2c735d3820e14132/reckittdata";
+const API_TIMEOUT_MS = 10000;
 
 scoreValue.innerText = percentage + "%";
 
-if(percentage >= 80){
+
+// SAVE RESULT TO API
+const visitorName = localStorage.getItem("visitorName");
+const visitorDesignation = localStorage.getItem("visitorDesignation");
+const visitorMobile = localStorage.getItem("visitorMobile");
+const visitorEmail = localStorage.getItem("visitorEmail");
+
+if (!visitorName || !visitorDesignation || !visitorMobile || !visitorEmail) {
+    alert("Visitor details are missing. Please register again.");
+    window.location.href = "index.html";
+} else {
+    const assessmentData = {
+        users: [{
+            name: visitorName,
+            designation: visitorDesignation,
+            contact: visitorMobile,
+            email: visitorEmail
+        }],
+        results: [{
+            score: score,
+            percentage: percentage,
+            status: percentage >= 80 ? "PASS" : "FAIL",
+            completedOn: new Date().toLocaleString()
+        }]
+    };
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+
+    fetch(
+        API_URL,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(assessmentData),
+            signal: controller.signal
+        }
+    )
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("API request failed with status " + response.status);
+        }
+
+        return response.json();
+    })
+    .then(data => {
+        //console.log("Assessment Saved:", data);
+    })
+    .catch(error => {
+        console.error("API Error:", error);
+    })
+    .finally(() => {
+        clearTimeout(timeoutId);
+    });
+}
+
+
+if (percentage >= 80) {
 
     resultTitle.innerText = "GREAT WORK";
 
@@ -80,7 +137,7 @@ if(percentage >= 80){
     });
 
 }
-else{
+else {
 
     resultTitle.innerText = "NEEDS IMPROVEMENT";
 
@@ -93,11 +150,11 @@ else{
 
     resultBtn.addEventListener("click", () => {
 
-        localStorage.removeItem("q1Answer");
-        localStorage.removeItem("q2Answer");
-        localStorage.removeItem("q3Answer");
-        localStorage.removeItem("q4Answer");
-        localStorage.removeItem("q5Answer");
+        localStorage.removeItem("q1Score");
+        localStorage.removeItem("q2Score");
+        localStorage.removeItem("q3Score");
+        localStorage.removeItem("q4Score");
+        localStorage.removeItem("q5Score");
 
         window.location.href = "q1.html";
 
