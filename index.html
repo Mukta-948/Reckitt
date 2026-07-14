@@ -97,6 +97,8 @@ const designationInput = document.getElementById("designation");
 const mobileInput = document.getElementById("mobile");
 const emailInput = document.getElementById("email");
 const submitBtn = document.getElementById("submitBtn");
+const API_URL = "https://serve.faux-api.com/22be078d2c735d3820e14132/reckittdata";
+const API_TIMEOUT_MS = 10000;
 
 function validateForm() {
 
@@ -199,34 +201,78 @@ emailInput.addEventListener("input", function() {
 
 
 // FORM SUBMIT
-form.addEventListener("submit", function(e) {
+form.addEventListener("submit", async function(e) {
 
     e.preventDefault();
 
-    localStorage.setItem(
-        "visitorName",
-        nameInput.value.trim()
-    );
+    const visitorData = {
+        users: [{
+            name: nameInput.value.trim(),
+            designation: designationInput.value.trim(),
+            contact: mobileInput.value.trim(),
+            email: emailInput.value.trim()
+        }]
+    };
 
-    localStorage.setItem(
-        "visitorDesignation",
-        designationInput.value.trim()
-    );
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
-    localStorage.setItem(
-        "visitorMobile",
-        mobileInput.value.trim()
-    );
+    try {
 
-    localStorage.setItem(
-        "visitorEmail",
-        emailInput.value.trim()
-    );
+        const response = await fetch(
+            API_URL,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(visitorData),
+                signal: controller.signal
+            }
+        );
 
-    window.location.href = "video.html";
+        if (!response.ok) {
+            throw new Error("API request failed with status " + response.status);
+        }
+
+        const result = await response.json();
+
+        console.log("API Response:", result);
+
+        localStorage.setItem(
+            "visitorName",
+            nameInput.value.trim()
+        );
+
+        localStorage.setItem(
+            "visitorDesignation",
+            designationInput.value.trim()
+        );
+
+        localStorage.setItem(
+            "visitorMobile",
+            mobileInput.value.trim()
+        );
+
+        localStorage.setItem(
+            "visitorEmail",
+            emailInput.value.trim()
+        );
+
+        window.location.href = "video.html";
+
+    } catch(error) {
+
+        console.error("API Error:", error);
+        alert("Unable to save visitor data.");
+
+    } finally {
+
+        clearTimeout(timeoutId);
+
+    }
 
 });
-
 </script>
 
 </body>
